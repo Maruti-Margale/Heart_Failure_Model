@@ -7,11 +7,17 @@ live demo : https://heartfailuremodel-maruti.streamlit.app/
 
 ```mermaid
 flowchart TD
-    A[🧍 User Inputs Health Data\n(Age, BP, Cholesterol, etc.)] --> B[📊 Streamlit UI Form]
-    B --> C[⚙️ Feature Encoding\n(Label & One-Hot Encoding)]
-    C --> D[🤖 KNN Model\nHeart_Failure_Prediction.pkl]
-    D --> E{🩺 Prediction:\nHeart Disease?}
-    E -->|Yes| F[🔴 High Risk\nShow Warning]
-    E -->|No| G[🟢 Low Risk\nShow Success Message]
-    F --> H[📤 Suggest Consulting Doctor]
+    A["User Inputs Health Data
+(Age, BP, Cholesterol, etc.)"] --> B["Streamlit UI Form"]
+    B --> C["Feature Encoding
+(Label & One-Hot Encoding)"]
+    C --> D["KNN Model
+(Heart_Failure_Prediction.pkl)"]
+    D --> E{"Prediction:
+Heart Disease?"}
+    E -->|Yes| F["High Risk
+Show Warning"]
+    E -->|No| G["Low Risk
+Show Success Message"]
+    F --> H["Suggest Consulting Doctor"]
     G --> H
