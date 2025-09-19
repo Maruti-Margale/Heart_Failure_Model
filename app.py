@@ -1,15 +1,13 @@
 import streamlit as st
-import pickle
 import numpy as np
+import pickle
 
 # Load model
 with open("Heart_Failure_Prediction.pkl", "rb") as f:
     model = pickle.load(f)
 
-# Set page layout
-st.set_page_config(page_title="Heart Disease Prediction", layout="centered")
+st.set_page_config(page_title="Predict Risk", layout="centered")
 
-# Custom CSS with new color scheme
 st.markdown("""
     <style>
     .navbar {
@@ -29,9 +27,8 @@ st.markdown("""
         background-color: #2F4F4F;
         color: #ffffff;
         text-align: center;
-        padding: 12px;
+        padding: 10px;
         font-size: 13px;
-        border-top: 1px solid #444;
     }
     .stButton button {
         background-color: #2E8B57;
@@ -47,14 +44,12 @@ st.markdown("""
         transition: 0.3s;
     }
     </style>
+    <div class="navbar">💉 Predict Heart Disease Risk</div>
 """, unsafe_allow_html=True)
 
-# Navbar
-st.markdown('<div class="navbar">💓 Heart Disease Risk Predictor</div>', unsafe_allow_html=True)
-
-# Input fields
 st.subheader("📝 Patient Information")
 
+# Input Fields
 age = st.slider("Age", 18, 100, 50)
 sex = st.selectbox("Sex", ["Female", "Male"])
 resting_bp = st.number_input("Resting Blood Pressure (mm Hg)", 80, 200, 120)
@@ -67,34 +62,32 @@ oldpeak = st.slider("Oldpeak (ST depression)", 0.0, 6.5, 1.0)
 st_slope = st.slider("ST Slope Risk Value", 0.0, 1.0, 0.5)
 chest_pain_type = st.selectbox("Chest Pain Type", ["ASY", "ATA", "NAP", "TA"])
 
-# Encoding
-def encode(val):
-    return 1 if val in ["Yes", "Male"] else 0
-
+# Encode Inputs
+def encode(val): return 1 if val in ["Yes", "Male"] else 0
 sex = encode(sex)
 fasting_bs = encode(fasting_bs)
 exercise_angina = encode(exercise_angina)
 
-# One-hot encoding for ChestPainType
+# One-hot for chest pain
 chest_pain_asy = 1 if chest_pain_type == "ASY" else 0
 chest_pain_ata = 1 if chest_pain_type == "ATA" else 0
 chest_pain_nap = 1 if chest_pain_type == "NAP" else 0
 chest_pain_ta = 1 if chest_pain_type == "TA" else 0
 
-# Final input
+# Create input array
 input_data = np.array([[
     age, sex, resting_bp, cholesterol, fasting_bs,
     resting_ecg, max_hr, exercise_angina, oldpeak, st_slope,
     chest_pain_asy, chest_pain_ata, chest_pain_nap, chest_pain_ta
 ]])
 
-# Predict button
+# Predict
 if st.button("🔍 Predict"):
     prediction = model.predict(input_data)[0]
     if prediction == 1:
         st.error("⚠️ High risk of heart disease. Please consult a doctor.")
     else:
-        st.success("✅ Low risk of heart disease. Keep up the good lifestyle!")
+        st.success("✅ Low risk of heart disease. Keep it up!")
 
 # Footer
 st.markdown('<div class="footer">Made with ❤️ by Maruti | Powered by Streamlit</div>', unsafe_allow_html=True)
